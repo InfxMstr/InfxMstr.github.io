@@ -1,5 +1,35 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"></head><body>
-  <h1>Formulario con geolocalización</h1>
-  <p>En breve se cargará…</p>
-</body></html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Formulario con geolocalización GPS</title>
+</head>
+<body>
+  <h1>Formulario con geolocalización GPS</h1>
+  <p>Por favor, espera mientras obtenemos tu ubicación...</p>
+
+  <iframe id="jot" 
+    src="https://form.jotform.com/251137113117646?lat=0&lng=0" 
+    width="100%" height="800"
+    frameborder="0"
+    allow="geolocation"
+    loading="lazy">
+  </iframe>
+
+  <script>
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const iframe = document.getElementById('jot');
+        const srcBase = iframe.src.split('?')[0];
+        iframe.src = `${srcBase}?lat=${lat}&lng=${lng}`;
+      }, function(error) {
+        console.warn('Error al capturar ubicación:', error);
+      });
+    } else {
+      console.warn('Geolocalización no soportada en este navegador.');
+    }
+  </script>
+</body>
+</html>
