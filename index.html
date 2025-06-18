@@ -2,33 +2,54 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Formulario con geolocalización GPS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario con Geolocalización GPS</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background-color: #004ba0;
+      color: white;
+      padding: 1rem;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 80px);
+      border: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Formulario con geolocalización GPS</h1>
-  <p>Por favor, espera mientras obtenemos tu ubicación...</p>
+  <header>
+    <h1>Formulario de Voluntariado</h1>
+    <p>Recibiendo tu ubicación GPS...</p>
+  </header>
 
-  <iframe id="jot" 
-    src="https://form.jotform.com/251137113117646?lat=0&lng=0" 
-    width="100%" height="800"
-    frameborder="0"
+  <iframe id="jot"
+    src="https://form.jotform.com/251687013967668?latitud=0&longitud=0"
     allow="geolocation"
     loading="lazy">
   </iframe>
 
   <script>
+    // Verifica si el navegador soporta geolocalización
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
         const iframe = document.getElementById('jot');
         const srcBase = iframe.src.split('?')[0];
-        iframe.src = `${srcBase}?lat=${lat}&lng=${lng}`;
-      }, function(error) {
-        console.warn('Error al capturar ubicación:', error);
+        // Recarga el iframe con los valores reales
+        iframe.src = `${srcBase}?latitud=${lat}&longitud=${lng}`;
+      }, function(err) {
+        console.warn('No se pudo obtener la ubicación:', err);
       });
     } else {
-      console.warn('Geolocalización no soportada en este navegador.');
+      console.warn('El navegador no soporta geolocalización.');
     }
   </script>
 </body>
